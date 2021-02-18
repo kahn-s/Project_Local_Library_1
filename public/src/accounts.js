@@ -1,5 +1,6 @@
 function findAccountById(accounts, id) {
   for (let i = 0; i < accounts.length; i++) {
+    let accountById = "I'm sorry, I can't find that account.";
     if (accounts[i].id === id) {
       accountById = accounts[i];
       return accountById;
@@ -36,34 +37,47 @@ function numberOfBorrows(account, books) {
     }
   }
   return numberOfBorrows;
-} //this works
+}
+
+function getAuthor(authors, id) {
+  //Gets author info for each book.
+  const arrayToObject = (array) =>
+    array.reduce((obj, item) => {
+      obj[item.id] = item;
+      return obj;
+    }, {});
+  const authorsObject = arrayToObject(authors);
+  authorInfo = authorsObject[id];
+
+  //authorInfo = authors.filter((element) => element.id === id);
+  console.log(authorInfo);
+  return authorInfo;
+}
 
 function getBooksPossessedByAccount(account, books, authors) {
-  //const array for result
-  const booksPossessedByAccount = [];
-  //find account id in books, check if returned, if not, push to array.
-  // i iterates books object, j iterates borrows object, k iterates authors
+  /*1. filter for books that haven't been returned
+2. filter those books for borrowed by account*/
 
-  for (let i = 0; i < books.length; i++) {
-    for (let j = 0; j < books[i].borrows.length; j++) {
-      const borrows = books[i].borrows;
-      //was book loaned and not returned?
-      if (account.id === borrows[j].id && !borrows[j].returned) {
-        //find books' author
-        for (let k = 0; k < authors.length; k++) {
-          if (books[i].authorId === authors[k].id) {
-            //deep copy book object and and add author
-            const newBook = { ...books[i] };
-            newBook.author = { ...authors[k] };
-            // add newBook to booksPossessed array
-            booksPossessedByAccount.push(newBook);
-          }
-        }
-      }
-    }
-  }
-  return booksPossessedByAccount;
-} // this works.  Later try to condense code
+  let authorInfo;
+  let result = [];
+  booksPossessedByAccount = books;
+  booksPossessedByAccount = booksPossessedByAccount.filter(
+    (book) => book.borrows[0].returned != "true"
+  );
+  booksPossessedByAccount = booksPossessedByAccount.filter(
+    (book) => book.borrows[0].id === account.id
+  );
+  booksPossessedByAccount = booksPossessedByAccount.map((book) => {
+    id = book.authorId;
+
+    authorInfo = getAuthor(authors, id);
+    book.author = authorInfo;
+    book = { ...book };
+    console.log(book);
+    result.push(book);
+  });
+  return result;
+}
 
 module.exports = {
   findAccountById,

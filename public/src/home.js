@@ -32,21 +32,27 @@ function booksBorrowedCount(books) {
 function getMostCommonGenres(books) {
   let genresList = [];
   let mostCommonGenres = [];
+  let countedType;
   for (let book in books) {
     let genre = books[book].genre;
     genresList.push(genre);
   }
-  while (genresList[0]) {
-    let holdingArray = [];
-    holdingArray = genresList.filter((value) => value === genresList[0]);
-    let countedGenre = { name: genresList[0], count: holdingArray.length };
-    mostCommonGenres.push(countedGenre);
+  while (genresList.length != 0) {
+    function countTypes(array, type) {
+      let holdingArray = [];
+      holdingArray = array.filter((value) => value === type);
+      let countedType = { name: type, count: holdingArray.length };
+      mostCommonGenres.push(countedType);
+    }
+
+    console.log(mostCommonGenres);
     genresList = genresList.filter((value) => value != genresList[0]);
-    holdingArray = [];
+
+    countTypes(genresList, genresList[0]);
   }
   mostCommonGenres.sort((a, b) => b.count - a.count);
   return mostCommonGenres.slice(0, 5);
-} //this works
+}
 
 function getMostPopularBooks(books) {
   //filter borrows, sort borrows.length, .slice for 5 most popular
