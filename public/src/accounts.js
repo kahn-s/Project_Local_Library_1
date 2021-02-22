@@ -6,7 +6,7 @@ function findAccountById(accounts, id) {
       return accountById;
     }
   }
-} //this works
+}
 
 function sortAccountsByLastName(accounts) {
   let accountsByLastName = accounts;
@@ -22,7 +22,7 @@ function sortAccountsByLastName(accounts) {
   };
   accountsByLastName.sort(compare);
   return accountsByLastName;
-} //this works
+}
 
 function numberOfBorrows(account, books) {
   //for given account, get id, search books for if borrowed, count total books borrowed.
@@ -47,18 +47,13 @@ function getAuthor(authors, id) {
       return obj;
     }, {});
   const authorsObject = arrayToObject(authors);
-  authorInfo = authorsObject[id];
-
-  //authorInfo = authors.filter((element) => element.id === id);
-  console.log(authorInfo);
-  return authorInfo;
+  return authorsObject[id];
 }
 
 function getBooksPossessedByAccount(account, books, authors) {
   /*1. filter for books that haven't been returned
 2. filter those books for borrowed by account*/
 
-  let authorInfo;
   let result = [];
   booksPossessedByAccount = books;
   booksPossessedByAccount = booksPossessedByAccount.filter(
@@ -69,9 +64,7 @@ function getBooksPossessedByAccount(account, books, authors) {
   );
   booksPossessedByAccount = booksPossessedByAccount.map((book) => {
     id = book.authorId;
-
-    authorInfo = getAuthor(authors, id);
-    book.author = authorInfo;
+    book.author = getAuthor(authors, id);
     book = { ...book };
     console.log(book);
     result.push(book);
